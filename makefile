@@ -1,14 +1,22 @@
-CCFLAGS = -Wall -std=c++11
-OBJDIR = ./obj
-BINDIR = ./bin
+EXEC = $(BINDIR)sockets
+SRCDIR = ./src/
+OBJDIR = ./obj/
+BINDIR = ./bin/
+SOURCES = $(wildcard $(SRCDIR)*.cpp)
+OBJECTS = $(addprefix $(OBJDIR), $(notdir $(SOURCES:.cpp=.o)))
+CIDIR = -I ./inc/
+CFLAGS = -Wall -std=c++11
 
-.PHONY: clean
+.PHONY: all clean run
 
-$(BINDIR)/sockets: $(OBJDIR)/main.o | $(BINDIR)
+$(EXEC): $(OBJDIR)main.o $(OBJECTS) | $(BINDIR)
 	g++ $< -o $@
 
-$(OBJDIR)/main.o: main.cpp | $(OBJDIR)
-	g++ $(CCFLAGS) -c $< -o $@
+$(OBJDIR)%.o: $(SRCDIR)%.cpp | $(OBJDIR)
+	g++ $(CFLAGS) $(CIDIR) -c $< -o $@
+
+$(OBJDIR)main.o: main.cpp
+	g++ $(CFLAGS) $(CIDIR) -c $< -o $@
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
@@ -16,5 +24,10 @@ $(OBJDIR):
 $(BINDIR):
 	mkdir -p $(BINDIR)
 
+all: clean $(EXEC) run
+
 clean:
-	rm -rf $(BINDIR) $(OBJDIR)
+	rm -rf $(BINDIR)* $(OBJDIR)*
+
+run:
+	$(EXEC)
