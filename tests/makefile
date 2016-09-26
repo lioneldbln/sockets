@@ -15,7 +15,7 @@ LOPTLIB = -lgmock -lpthread
 .PHONY: all clean run
 
 $(EXEC): $(OBJECTS) $(XOBJECTS) | $(BINDIR)
-	g++ $(LOPTDIR) $< -o $@ $(LOPTLIB)
+	g++ $(LOPTDIR) $^ -o $@ $(LOPTLIB)
 
 $(OBJDIR)%.o: %.cpp | $(OBJDIR)
 	g++ $(CFLAGS) $(COPTINC) -c $< -o $@

@@ -4,19 +4,19 @@ OBJDIR = ./obj/
 BINDIR = ./bin/
 SOURCES = $(wildcard $(SRCDIR)*.cpp)
 OBJECTS = $(addprefix $(OBJDIR), $(notdir $(SOURCES:.cpp=.o)))
-CIDIR = -I ./inc/
 CFLAGS = -Wall -std=c++11
+COPTINC = -I ./inc/
 
-.PHONY: all clean run
+.PHONY: all test clean run
 
 $(EXEC): $(OBJDIR)main.o $(OBJECTS) | $(BINDIR)
-	g++ $< -o $@
+	g++ $^ -o $@
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp | $(OBJDIR)
-	g++ $(CFLAGS) $(CIDIR) -c $< -o $@
+	g++ $(CFLAGS) $(COPTINC) -c $< -o $@
 
 $(OBJDIR)main.o: main.cpp
-	g++ $(CFLAGS) $(CIDIR) -c $< -o $@
+	g++ $(CFLAGS) $(COPTINC) -c $< -o $@
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
@@ -24,7 +24,10 @@ $(OBJDIR):
 $(BINDIR):
 	mkdir -p $(BINDIR)
 
-all: clean $(EXEC) run
+all: clean $(EXEC) test
+
+test:
+	(cd ./tests; $(MAKE) all)
 
 clean:
 	rm -rf $(BINDIR)* $(OBJDIR)*
