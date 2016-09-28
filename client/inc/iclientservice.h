@@ -4,7 +4,7 @@
 
 #include "socket.h"
 
-class Service
+class IClientService
 {
 public:
 	virtual int Connect(const Socket& socket) = 0;

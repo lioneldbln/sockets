@@ -3,11 +3,11 @@
 #include <arpa/inet.h>
 #include <string.h>
 
-#include "serviceforclient.h"
+#include "clientservice.h"
 
 #include "socket.h"
 
-int ServiceForClient::Connect(const Socket& socket)
+int ClientService::Connect(const Socket& socket)
 {
 	struct sockaddr_in remoteSocketInfo;
 	remoteSocketInfo.sin_family = AF_INET;
@@ -17,7 +17,7 @@ int ServiceForClient::Connect(const Socket& socket)
 	return connect(socket.GetFileDescriptor(), (struct sockaddr *)&remoteSocketInfo, sizeof(sockaddr_in));
 }
 
-int ServiceForClient::Send(const Socket& socket, const std::string& mess)
+int ClientService::Send(const Socket& socket, const std::string& mess)
 {
    const char* c_ = mess.c_str();
    int size = strlen(c_)+1;

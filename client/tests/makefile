@@ -1,4 +1,4 @@
-EXEC = $(BINDIR)socketstest
+EXEC = $(BINDIR)clienttest
 SRCDIR = ./
 TESTSRCDIR = ../src/
 COMMONSRCDIR = ../../common/src/

@@ -4,7 +4,7 @@
 
 #include "exceptionex.h"
 
-Client::Client(Socket s_, std::unique_ptr<Service> sfc_) : socket(std::move(s_)), serv(std::move(sfc_))
+Client::Client(Socket s_, std::unique_ptr<IClientService> sfc_) : socket(std::move(s_)), serv(std::move(sfc_))
 {
 }
 

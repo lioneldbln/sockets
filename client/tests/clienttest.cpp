@@ -6,7 +6,7 @@
 
 using namespace ::testing;
 
-class ServiceForClientStub : public Service
+class ClientServiceStub : public IClientService
 {
 public:
 	int Connect(const Socket& socket) override {
@@ -20,12 +20,12 @@ public:
 
 TEST(ClientTest, ThrowAnExceptionIfTheConnectionFails)
 {
-   Client client(std::move(Socket{}), std::unique_ptr<ServiceForClientStub>{new ServiceForClientStub()});
+   Client client(std::move(Socket{}), std::unique_ptr<IClientService>{new ClientServiceStub()});
    ASSERT_THROW(client.Connect(), connection_failure);
 }
 
 TEST(ClientTest, ThrowAnExceptionIfTheSendOperationFails)
 {
-   Client client(std::move(Socket{}), std::move(std::unique_ptr<ServiceForClientStub>{new ServiceForClientStub()}));
+   Client client(std::move(Socket{}), std::move(std::unique_ptr<IClientService>{new ClientServiceStub()}));
    ASSERT_THROW(client.Send("Hello World!"), send_failure);
 }
