@@ -10,7 +10,7 @@ class Socket
 {
 public:
    Socket() : Socket(-1) {};
-   Socket(int fd_) : fd(fd_) {};
+   explicit Socket(int fd_) : fd(fd_) {};
    Socket(int socket_family, int socket_type, int protocol);
    ~Socket();
 
