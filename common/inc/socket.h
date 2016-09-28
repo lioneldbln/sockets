@@ -9,7 +9,8 @@
 class Socket
 {
 public:
-   Socket() : fd(-1) {};
+   Socket() : Socket(-1) {};
+   Socket(int fd_) : fd(fd_) {};
    Socket(int socket_family, int socket_type, int protocol);
    ~Socket();
 
@@ -33,13 +34,7 @@ public:
       return fd;
    }
 
-   static int GetObjectCounter() {
-      return cnt;
-   }
 
 private:
-   void CloseSocket();
-
    int fd; // file descriptor
-   static int cnt;
 };
