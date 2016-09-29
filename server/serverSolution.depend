@@ -1,0 +1,47 @@
+# depslib dependency file v1.0
+1474981697 source:/home/ubuntu/Documents/C++/sockets/common/src/socket.cpp
+	<string.h>
+	<errno.h>
+	"socket.h"
+	"exceptionex.h"
+
+1474982374 /home/ubuntu/Documents/C++/sockets/common/inc/socket.h
+	<unistd.h>
+	<sys/types.h>
+	<netinet/in.h>
+	<sys/socket.h>
+
+1474980107 /home/ubuntu/Documents/C++/sockets/common/inc/exceptionex.h
+	<stdexcept>
+
+1474981995 source:/home/ubuntu/Documents/C++/sockets/server/main.cpp
+	<iostream>
+	<memory>
+	"server.h"
+	"exceptionex.h"
+	"serverservice.h"
+
+1474981909 /home/ubuntu/Documents/C++/sockets/server/inc/server.h
+	<memory>
+	"socket.h"
+	"iserverservice.h"
+
+1474978312 /home/ubuntu/Documents/C++/sockets/server/inc/iserverservice.h
+	"socket.h"
+
+1474978713 /home/ubuntu/Documents/C++/sockets/server/inc/serverservice.h
+	"iserverservice.h"
+
+1474981887 source:/home/ubuntu/Documents/C++/sockets/server/src/server.cpp
+	<string.h>
+	"server.h"
+	"exceptionex.h"
+
+1474980239 source:/home/ubuntu/Documents/C++/sockets/server/src/serverservice.cpp
+	<sys/types.h>
+	<sys/socket.h>
+	<netdb.h>
+	<strings.h>
+	"serverservice.h"
+	<iostream>
+

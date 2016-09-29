@@ -1,18 +1,24 @@
 EXEC = $(BINDIR)server
 SRCDIR = ./src/
+COMMONSRCDIR = ../common/src/
 OBJDIR = ./obj/
 BINDIR = ./bin/
 SOURCES = $(wildcard $(SRCDIR)*.cpp)
 OBJECTS = $(addprefix $(OBJDIR), $(notdir $(SOURCES:.cpp=.o)))
+COMMONSOURCES = $(wildcard $(COMMONSRCDIR)*.cpp)
+COMMONOBJECTS = $(addprefix $(OBJDIR), $(notdir $(COMMONSOURCES:.cpp=.o)))
 CFLAGS = -Wall -std=c++11
-COPTIONSINC = -I ./inc/
+COPTIONSINC = -I ./inc/ -I ../common/inc/
 
 .PHONY: all test clean run
 
-$(EXEC): $(OBJDIR)main.o $(OBJECTS) | $(BINDIR)
+$(EXEC): $(OBJDIR)main.o $(OBJECTS) $(COMMONOBJECTS) | $(BINDIR)
 	g++ $^ -o $@
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp | $(OBJDIR)
+	g++ $(CFLAGS) $(COPTIONSINC) -c $< -o $@
+
+$(OBJDIR)%.o: $(COMMONSRCDIR)%.cpp | $(OBJDIR)
 	g++ $(CFLAGS) $(COPTIONSINC) -c $< -o $@
 
 $(OBJDIR)main.o: main.cpp | $(OBJDIR)
