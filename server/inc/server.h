@@ -1,25 +1,19 @@
 #pragma once
 
-#include <memory>
-
-#include "socket.h"
-#include "iserverservice.h"
+#include "tcpacceptor.h"
+#include "tcpstream.h"
 
 class Server
 {
 public:
-	Server(Socket s_, std::unique_ptr<IServerService> sfs_);
+	Server();
+	Server(TCPAcceptor tcpAcceptor_);
 
-	void Bind();
+	TCPStream Start(int family, int type, int protocol, int port) const;
 
-	void Listen();
-
-	Socket Accept();
-
-	void Receive(const Socket& socket);
+	TCPStream Accept(const TCPStream& tcpStream) const;
 
 private:
-	Socket socket;
-	std::unique_ptr<IServerService> serv;
+	TCPAcceptor tcpAcceptor;
 };
 

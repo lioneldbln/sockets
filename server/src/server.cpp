@@ -1,35 +1,21 @@
-#include <string.h>
+#include <cstring>
 
 #include "server.h"
 
-#include "exceptionex.h"
-
-Server::Server(Socket s_, std::unique_ptr<IServerService> sfs_) : socket(std::move(s_)), serv(std::move(sfs_))
+Server::Server() : Server(std::move(TCPAcceptor(std::move(TCPAcceptor::t_SocketService(new SocketService)))))
 {
 }
 
-void Server::Bind()
+Server::Server(TCPAcceptor tcpAcceptor_) : tcpAcceptor(std::move(tcpAcceptor_))
 {
-	if(serv->Bind(socket) == -1)
-		throw bind_failure(strerror(errno));
 }
 
-void Server::Listen()
+TCPStream Server::Start(int family, int type, int protocol, int port) const
 {
-	if(serv->Listen(socket) == -1)
-		throw listen_failure(strerror(errno));
+	return tcpAcceptor.Start(family, type, protocol, port);
 }
 
-Socket Server::Accept()
+TCPStream Server::Accept(const TCPStream& tcpStream) const
 {
-   Socket newsocket = serv->Accept(socket);
-	if(socket.GetFileDescriptor() == -1)
-		throw accept_failure(strerror(errno));
-	return newsocket;
-}
-
-void Server::Receive(const Socket& socket)
-{
-	if(serv->Receive(socket) == -1)
-		throw receive_failure(strerror(errno));
+	return tcpAcceptor.Accept(tcpStream);
 }
