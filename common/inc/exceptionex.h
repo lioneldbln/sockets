@@ -43,3 +43,9 @@ class receive_failure : public std::logic_error
 public:
    receive_failure(const std::string& mess) : std::logic_error(mess + ": receive error ") {}
 };
+
+class stop_server : public std::logic_error
+{
+public:
+   stop_server() : std::logic_error("server stopped") {}
+};
