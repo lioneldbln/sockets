@@ -2,20 +2,15 @@
 
 #include "client.h"
 
-#include "exceptionex.h"
-
-Client::Client(Socket s_, std::unique_ptr<IClientService> sfc_) : socket(std::move(s_)), serv(std::move(sfc_))
+Client::Client() : Client(std::move(TCPConnector(std::move(TCPConnector::t_SocketService(new SocketService)))))
 {
 }
 
-void Client::Connect()
+Client::Client(TCPConnector tcpConnector_) : tcpConnector(std::move(tcpConnector_))
 {
-	if(serv->Connect(socket) == -1)
-		throw connection_failure(strerror(errno));
 }
 
-void Client::Send(const std::string& mess)
-{
-	if(serv->Send(socket, mess) == -1)
-		throw send_failure(strerror(errno));
+TCPStream Client::Connect(int family, int type, int protocol, int port, const std::string& ipAddress)
+{	
+	return tcpConnector.Connect(family, type, protocol, port, ipAddress);
 }

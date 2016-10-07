@@ -1,31 +1,18 @@
 #include "gmock/gmock.h"
 
 #include "client.h"
-
 #include "exceptionex.h"
 
-using namespace ::testing;
-
-class ClientServiceStub : public IClientService
+class ClientTest : public testing::Test
 {
 public:
-	int Connect(const Socket& socket) override {
-		return -1;
-	}
+	Client client;
 
-   int Send(const Socket& socket, const std::string& mess) override {
-		return -1;
+	ClientTest() : client(std::move(TCPConnector::t_SocketService(new SocketServiceStub))) {
 	}
 };
 
-TEST(ClientTest, ThrowAnExceptionIfTheConnectionFails)
+TEST_F(ClientTest, ThrowAnExceptionIfTheConnectionFails)
 {
-   Client client(std::move(Socket{}), std::unique_ptr<IClientService>{new ClientServiceStub()});
-   ASSERT_THROW(client.Connect(), connection_failure);
-}
-
-TEST(ClientTest, ThrowAnExceptionIfTheSendOperationFails)
-{
-   Client client(std::move(Socket{}), std::move(std::unique_ptr<IClientService>{new ClientServiceStub()}));
-   ASSERT_THROW(client.Send("Hello World!"), send_failure);
+   ASSERT_THROW(client.Connect(-1,-1,-1,-1,"-1.-1.-1.-1"), connection_failure);
 }

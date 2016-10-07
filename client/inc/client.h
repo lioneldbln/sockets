@@ -2,13 +2,14 @@
 
 #include <memory>
 
-#include "socket.h"
-#include "iclientservice.h"
+#include "tcpstream.h"
+#include "tcpconnector.h"
 
 class Client
 {
 public:
-	Client(Socket s_, std::unique_ptr<IClientService> sfc_);
+	Client();
+	Client(TCPConnector tcpConnector_);
    ~Client() = default;
 
    Client(const Client& x) = delete;
@@ -17,11 +18,8 @@ public:
 	Client(Client&& x) = delete;
 	Client& operator=(Client&& x) = delete;
 
-	void Connect();
-
-   void Send(const std::string& mess);
+	TCPStream Connect(int family, int type, int protocol, int port, const std::string& ipAddress);
 
 private:
-   Socket socket;
-   std::unique_ptr<IClientService> serv;
+	TCPConnector tcpConnector;
 };

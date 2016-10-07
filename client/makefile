@@ -10,7 +10,7 @@ COMMONOBJECTS = $(addprefix $(OBJDIR), $(notdir $(COMMONSOURCES:.cpp=.o)))
 CFLAGS = -Wall -std=c++11
 COPTIONSINC = -I ./inc/ -I ../common/inc/
 
-.PHONY: all test clean run
+.PHONY: all test alltest clean run checkmem
 
 $(EXEC): $(OBJDIR)main.o $(OBJECTS) $(COMMONOBJECTS) | $(BINDIR)
 	g++ $^ -o $@
@@ -30,9 +30,13 @@ $(OBJDIR):
 $(BINDIR):
 	mkdir -p $(BINDIR)
 
-all: clean $(EXEC) test
+all: clean $(EXEC) alltest
 
 test:
+	(cd ./tests; $(MAKE))
+	(cd ./tests; $(MAKE) run)
+
+alltest:
 	(cd ./tests; $(MAKE) all)
 
 clean:
@@ -40,3 +44,7 @@ clean:
 
 run:
 	$(EXEC)
+
+checkmem:
+	valgrind --leak-check=yes $(EXEC)
+	
