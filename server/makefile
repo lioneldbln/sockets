@@ -9,11 +9,12 @@ COMMONSOURCES = $(wildcard $(COMMONSRCDIR)*.cpp)
 COMMONOBJECTS = $(addprefix $(OBJDIR), $(notdir $(COMMONSOURCES:.cpp=.o)))
 CFLAGS = -Wall -std=c++11
 COPTIONSINC = -I ./inc/ -I ../common/inc/
+COPTIONSLIB = -pthread
 
 .PHONY: all test alltest clean run
 
 $(EXEC): $(OBJDIR)main.o $(OBJECTS) $(COMMONOBJECTS) | $(BINDIR)
-	g++ $^ -o $@
+	g++ $(COPTIONSLIB) $^ -o $@
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp | $(OBJDIR)
 	g++ $(CFLAGS) $(COPTIONSINC) -c $< -o $@
@@ -43,4 +44,5 @@ clean:
 	rm -rf $(BINDIR)* $(OBJDIR)*
 
 run:
+	rm -rf quit.txt
 	$(EXEC)
