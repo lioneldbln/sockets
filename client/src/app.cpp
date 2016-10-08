@@ -10,7 +10,7 @@
 #include "client.h"
 #include "exceptionex.h"
 
-void App::Run()
+void App::Run() const
 {
    std::cout << "Client started!" << std::endl;
 
@@ -20,10 +20,12 @@ void App::Run()
 
 		while(1)
 		{
-			std::string input;
-			getline(std::cin, input);
+			std::string input = GetLineFromConsole();
 
-			client.Connect(AF_INET, SOCK_STREAM, 0, 8080, "127.0.0.1").Send(input);
+			TCPStream tcpStream = client.Connect(AF_INET, SOCK_STREAM, 0, 8080, "127.0.0.1");
+			tcpStream.Send(input);
+			std::string strBuf = tcpStream.Receive();
+			std::cout << strBuf << std::endl;
 
 			if(input == "quit")
 				break;
@@ -41,3 +43,9 @@ void App::Run()
 	std::cout << "Client closed" << std::endl;
 }
 
+std::string App::GetLineFromConsole() const
+{
+	std::string input;
+	getline(std::cin, input);
+	return input;
+}
