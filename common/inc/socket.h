@@ -6,7 +6,7 @@ class Socket
 {
 public:
 	Socket() : fd(-1) {};
-	explicit Socket(int fd_) : fd(fd_) {};
+	explicit Socket(int fd_);
    Socket(int socket_family, int socket_type, int protocol);
 	~Socket();
 

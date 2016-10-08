@@ -34,17 +34,17 @@ int SocketService::Receive(const Socket& socket, std::string& strBuf) const
 int SocketService::Connect(const Socket& socket, int port, const std::string& ipAddress) const
 {
 	struct sockaddr_in socketInfo;
+   memset(&socketInfo, 0, sizeof(socketInfo));
 	socketInfo.sin_family = AF_INET;
 	socketInfo.sin_port = htons(port);
 	inet_aton(ipAddress.c_str(), &socketInfo.sin_addr);
-   memset(socketInfo.sin_zero, '\0', sizeof(socketInfo.sin_zero));
 	return connect(socket.GetFileDescriptor(), (struct sockaddr *)&socketInfo, sizeof(sockaddr_in));
 }
 
 int SocketService::Bind(const Socket& socket, int port) const
 {
 	struct sockaddr_in socketInfo;
-	bzero(&socketInfo, sizeof(sockaddr_in));  // Clear structure memory
+	memset(&socketInfo, 0, sizeof(socketInfo));
 	socketInfo.sin_family = PF_INET;
 	socketInfo.sin_addr.s_addr = htonl(INADDR_ANY); // Use any address available to the system
 	socketInfo.sin_port = htons(port);      // Set port number
